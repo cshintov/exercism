@@ -20,3 +20,8 @@ clean:
 
 submit:
 	exercism submit $(language)/$(exercise)/lib/$(ex_file).ex
+
+watch:
+	fswatch -o elixir/lasagna | xargs -n1 -I{} script -q /dev/null make test
+
+
