@@ -18,3 +18,5 @@ deps:
 clean:
 	docker-compose down
 
+submit:
+	exercism submit $(language)/$(exercise)/lib/$(ex_file).ex
