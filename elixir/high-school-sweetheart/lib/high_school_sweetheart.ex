@@ -3,9 +3,8 @@ defmodule HighSchoolSweetheart do
 
   def initial(name) do
     name
-      |> String.trim
-      |> String.capitalize
       |> first_letter
+      |> String.upcase
       |> Kernel.<> "."
   end
 
@@ -15,26 +14,24 @@ defmodule HighSchoolSweetheart do
   end
 
   def pair(full_name1, full_name2) do
-    top = """
+    i1 = initials(full_name1)
+    i2 = initials(full_name2)
+
+    """
          ******       ******
        **      **   **      **
      **         ** **         **
     **            *            **
     **                         **
+    **     #{i1}  +  #{i2}     **
+     **                       **
+       **                   **
+         **               **
+           **           **
+             **       **
+               **   **
+                 ***
+                  *
     """
-
-    middle = "**     #{initials(full_name1)}  +  #{initials(full_name2)}     **\n"
-
-    bottom = """
-      **                       **
-        **                   **
-          **               **
-            **           **
-              **       **
-                **   **
-                  ***
-                   *
-     """
-     top <> middle <> bottom
   end
 end
