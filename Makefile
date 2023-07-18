@@ -9,6 +9,9 @@ run:
 shell:
 	docker-compose exec app bash
 
+iex:
+	docker-compose exec app iex
+
 test:
 	docker-compose exec -w /exercism/$(exercise) app mix test
 
