@@ -1,4 +1,6 @@
-.PHONY: watch
+.PHONY: build run shell test deps clean
+
+all: watch
 
 build:
 	docker-compose build
