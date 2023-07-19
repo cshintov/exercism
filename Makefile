@@ -1,4 +1,4 @@
-.PHONY: build run shell test deps clean
+.PHONY: watch
 
 build:
 	docker-compose build
@@ -10,7 +10,7 @@ shell:
 	docker-compose exec app bash
 
 iex:
-	docker-compose exec app iex
+	docker-compose exec app rlwrap -a iex
 
 test:
 	docker-compose exec -w /exercism/$(exercise) app mix test
