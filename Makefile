@@ -12,7 +12,7 @@ shell:
 	docker-compose exec app bash
 
 iex:
-	docker-compose exec app rlwrap -a iex
+	docker-compose exec app rlwrap -a iex --dot-iex ../.iex.exs
 
 test:
 	docker-compose exec -w /exercism/$(exercise) app mix test
