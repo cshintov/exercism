@@ -29,4 +29,8 @@ submit:
 watch:
 	fswatch -o elixir/$(exercise) | xargs -n1 -I{} script -q /dev/null make test
 
+mount:
+	sudo mount -t nfs mini2:/home/shinto/exercism ~/Exercism
 
+umount:
+	sudo umount ~/Exercism
