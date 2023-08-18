@@ -6,7 +6,7 @@ build:
 	docker-compose build
 
 run:
-	docker-compose up
+	docker-compose up -d
 
 shell:
 	docker-compose exec app bash
@@ -34,3 +34,6 @@ mount:
 
 umount:
 	sudo umount ~/Exercism
+
+next:
+	exercism download --exercise=$(exercise) --track=elixir
