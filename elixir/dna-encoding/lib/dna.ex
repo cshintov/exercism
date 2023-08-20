@@ -14,7 +14,7 @@ defmodule DNA do
 
   def encode(dna), do: do_encode(dna, <<>>)
 
-  defp do_encode(~C"", encoded), do: encoded
+  defp do_encode([], encoded), do: encoded
   defp do_encode([char | rest], encoded) do
     do_encode(rest, <<encoded::bitstring, encode_nucleotide(char)::size(4)>>)
   end
