@@ -90,13 +90,13 @@ defmodule LinkedListTest do
     assert LinkedList.count(list) == 5
   end
 
-  #@tag :pending
+  @tag :pending
   test "from_list/1 of empty list" do
     list = LinkedList.from_list([])
     assert LinkedList.count(list) == 0
   end
 
-  #@tag :pending
+  @tag :pending
   test "from_list/1 of 2 element list, keeping order" do
     list = LinkedList.from_list([:a, :b])
     assert LinkedList.count(list) == 2
@@ -123,7 +123,7 @@ defmodule LinkedListTest do
     assert LinkedList.to_list(list) == [:mon, :tues]
   end
 
-  #@tag :pending
+  @tag :pending
   test "from_list/1 and successive push/2 of a list result in reversed order" do
     list = [:mon, :tues]
 
@@ -134,20 +134,20 @@ defmodule LinkedListTest do
              LinkedList.to_list(push_list) |> Enum.reverse()
   end
 
-  #@tag :pending
+  @tag :pending
   test "reverse/1 of list of 2 datum" do
     list = LinkedList.from_list([1, 2, 3]) |> LinkedList.reverse()
     assert LinkedList.to_list(list) == [3, 2, 1]
   end
 
-  #@tag :pending
+  @tag :pending
   test "reverse/1 of list of 200 datum" do
     list = Enum.to_list(1..200)
     linked_list = LinkedList.from_list(list) |> LinkedList.reverse()
     assert LinkedList.to_list(linked_list) == Enum.reverse(list)
   end
 
-  #@tag :pending
+  @tag :pending
   test "reverse/1 round trip" do
     list = Enum.to_list(1..200)
 

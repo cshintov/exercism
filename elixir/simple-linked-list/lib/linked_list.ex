@@ -54,17 +54,19 @@ defmodule LinkedList do
   Construct a LinkedList from a stdlib List
   """
   @spec from_list(list()) :: t
-  def from_list(list), do: do_from_list(list)
+  def from_list(list), do: LinkedList.reverse(do_from_list(list, {}))
 
-  defp do_from_list([]), do: {}
-  defp do_from_list([h | t]), do: {h, do_from_list(t)}
+  defp do_from_list([], ll), do: ll
+  defp do_from_list([h | t], ll), do: do_from_list(t, {h, ll})
 
   @doc """
   Construct a stdlib List LinkedList from a LinkedList
   """
   @spec to_list(t) :: list()
-  def to_list({}), do: []
-  def to_list({h, t}), do: [h | to_list(t)]
+  def to_list(list), do: do_to_list(LinkedList.reverse(list), [])
+
+  defp do_to_list({}, list), do: list
+  defp do_to_list({h, t}, list), do: do_to_list(t, [h | list])
 
   @doc """
   Reverse a LinkedList
