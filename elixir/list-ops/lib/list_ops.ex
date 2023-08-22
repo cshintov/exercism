@@ -71,6 +71,8 @@ defmodule ListOps do
   defp do_append(a, [h | t]), do: do_append([h | a], t)
 
   @spec concat([[any]]) :: [any]
-  def concat(ll) do
-  end
+  def concat(ll), do: do_concat(ll, [])
+
+  defp do_concat([], acc), do: acc
+  defp do_concat([h | t] = ll, acc), do: do_concat(t, ListOps.append(acc, h))
 end
