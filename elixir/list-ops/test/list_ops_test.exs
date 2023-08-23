@@ -3,6 +3,8 @@ defmodule ListOpsTest do
 
   use ExUnit.Case
 
+  doctest ListOps
+
   defp odd?(n), do: rem(n, 2) == 1
 
   describe "count" do
@@ -175,18 +177,18 @@ defmodule ListOpsTest do
       assert L.concat([[1, 2], [3], [], [4, 5, 6]]) == [1, 2, 3, 4, 5, 6]
     end
 
-    @tag :pending
+    #@tag :pending
     test "list of nested lists" do
       assert L.concat([[[1], [2]], [[3]], [[]], [[4, 5, 6]]]) == [[1], [2], [3], [], [4, 5, 6]]
     end
 
-    @tag :pending
+    #@tag :pending
     @tag :slow
     test "huge list of small lists" do
       assert L.concat(Enum.map(1..1_000_000, &[&1])) == Enum.to_list(1..1_000_000)
     end
 
-    @tag :pending
+    #@tag :pending
     @tag :slow
     test "small list of huge lists" do
       assert L.concat(Enum.map(0..9, &Enum.to_list((&1 * 100_000 + 1)..((&1 + 1) * 100_000)))) ==

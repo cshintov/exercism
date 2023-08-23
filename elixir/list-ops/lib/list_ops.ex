@@ -1,9 +1,4 @@
 defmodule ListOps do
-  # Please don't use any external modules (especially List or Enum) in your
-  # implementation. The point of this exercise is to create these basic
-  # functions yourself. You may use basic Kernel functions (like `Kernel.+/2`
-  # for adding numbers), but please do not use Kernel functions for Lists like
-  # `++`, `--`, `hd`, `tl`, `in`, and `length`.
 
   @spec count(list) :: non_neg_integer
   def count(l), do: do_count(l, 0)
@@ -70,9 +65,31 @@ defmodule ListOps do
   defp do_append(a, []), do: a
   defp do_append(a, [h | t]), do: do_append([h | a], t)
 
+  @doc """
+  Given a list of lists, unpack the inner lists non-recursively upto one level.
+
+  iex> L.concat([[1, 2], [3], [], [4, 5, 6]])
+  [1, 2, 3, 4, 5, 6]
+
+  iex> L.concat([[[1], [2]], [[3]], [[]], [[4, 5, 6]]])
+  [[1], [2], [3], [], [4, 5, 6]]
+  """
+
   @spec concat([[any]]) :: [any]
-  def concat(ll), do: do_concat(ll, [])
+  def concat(ll), do: do_concat(ListOps.reverse(ll), [])
 
   defp do_concat([], acc), do: acc
-  defp do_concat([h | t] = ll, acc), do: do_concat(t, ListOps.append(acc, h))
+  defp do_concat([h | t], acc), do: do_concat(t, prepend(ListOps.reverse(h), acc))
+
+  @doc """
+  Prepend the first list to the second.
+
+  iex> prepend([[1], [2]], [])
+  [[1], [2]]
+
+  iex> assert prepend([[3]], [[1], [2]])
+  [[3], [1], [2]]
+  """
+  defp prepend([], acc), do: acc
+  defp prepend([h | t], acc), do: prepend(t, [h | acc])
 end
