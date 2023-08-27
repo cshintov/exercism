@@ -36,4 +36,4 @@ umount:
 	sudo umount ~/Exercism
 
 next:
-	exercism download --exercise=$(exercise) --track=elixir
+	./download.sh
