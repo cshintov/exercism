@@ -34,7 +34,10 @@ defmodule LibraryFees do
   def days_late(planned_return_date, actual_return_datetime), do:
     actual_return_datetime
     |> Date.diff(planned_return_date)
-    |> max(0)
+    |> positive_or_zero
+
+  # Returns num if positive and zero if negative.
+  defp positive_or_zero(num), do: max(num, 0)
 
   def monday?(datetime) do
     is_monday? = &(&1 == @monday)
@@ -52,6 +55,6 @@ defmodule LibraryFees do
     |> discounted(rate, monday?(return))
   end
 
-  defp discounted(diff, rate, true = _monday), do: rate * diff |> div(2)
-  defp discounted(diff, rate, false = _monday), do: rate * diff
+  defp discounted(late, rate, true = _monday), do: rate * late |> div(2)
+  defp discounted(late, rate, false = _monday), do: rate * late
 end
