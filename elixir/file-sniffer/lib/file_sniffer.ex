@@ -29,6 +29,9 @@ defmodule FileSniffer do
 
   def type_from_extension(extension), do: @file_types[extension][:media_type]
 
+  @doc """
+    Get media type from content of the file
+  """
   def type_from_binary(<<0x42, 0x4D, _::binary>>), do:
     type_from_extension("bmp")
 
@@ -47,16 +50,18 @@ defmodule FileSniffer do
 
   def type_from_binary(_), do: nil
 
-  def verify(file_binary, extension) do
-    filetype = type_from_extension(extension)
-    do_verify(filetype == type_from_binary(file_binary), filetype)
-  end
 
-  defp do_verify(_, nil = _unknown), do:
-    {:error, "Warning, file format and file extension do not match."}
+  @doc """
+    Verify that binary and extension matches
+  """
+  def verify(file_binary, extension), do:
+    do_verify(type_from_extension(extension), type_from_binary(file_binary))
 
-  defp do_verify(false, _), do:
-    {:error, "Warning, file format and file extension do not match."}
+  @warning "Warning, file format and file extension do not match."
 
-  defp do_verify(true, filetype), do: {:ok, filetype}
+  defp do_verify(nil, _), do: {:error, @warning}
+
+  defp do_verify(filetype, filetype), do: {:ok, filetype}
+
+  defp do_verify(_, _), do: {:error, @warning}
 end
