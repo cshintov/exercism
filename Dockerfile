@@ -1,6 +1,9 @@
 # Use the official Elixir image from the Docker Hub
 FROM elixir:latest
 
+# Install rlwrap
+RUN apt-get update && apt-get install -y rlwrap
+
 # Set the working directory inside the Docker image
 WORKDIR /exercism
 
@@ -19,3 +22,5 @@ RUN mix local.rebar --force
 # Compile the project
 #RUN mix compile
 
+RUN echo "alias iex='rlwrap -a iex'" >> ~/.bash_profile
+RUN echo "set editing-mode vi" >> ~/.inputrc
