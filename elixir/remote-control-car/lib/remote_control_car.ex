@@ -13,12 +13,7 @@ defmodule RemoteControlCar do
     nickname: String.t(),
   }
 
-  def new(), do:
-    %RemoteControlCar{
-      nickname: "none"
-    }
-
-  def new(nickname), do:
+  def new(nickname \\ "none"), do:
     %RemoteControlCar{
       nickname: nickname
     }
