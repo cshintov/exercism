@@ -1,4 +1,5 @@
 IEx.configure(
+  inspect: [charlists: :as_lists],
   colors: [
     enabled: true,
     eval_result: [ :cyan, :bright ],
