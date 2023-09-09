@@ -13,7 +13,7 @@ defmodule Test do
   @doc """
   There are two forms for the next_fun
   1. current -> {current, next}
-  2. {current, next} -> {current, {next, fn(current, next)}}
+  2. {current, next} -> {current, {out_fn(cur, next), next_term(current, next)}}
 
   Or think of the return value of the next_fun as a pipe.
 
@@ -25,5 +25,16 @@ defmodule Test do
 
   def fib_stream do
     Stream.unfold({1, 1}, fn {cur, next} -> {cur, {next, cur + next}} end)
+  end
+
+  def pos_nums do
+    Stream.unfold(1, fn n -> {n, n+1} end)
+  end
+
+  def pos_nums1 do
+    Stream.unfold(
+      {1, 2},
+      fn {out, inp} -> {out, {inp, inp + 1}} end
+    )
   end
 end
