@@ -14,19 +14,23 @@ defmodule RomanNumerals do
   }
   @basenums Map.keys(@base)
 
+
+
+
+
   @spec numeral(pos_integer) :: String.t()
 
-  def numeral(n) when n in @basenums, do: @base[n]
   def numeral(n) do
     digs = digits(n)
     numeral(digs, length(digs))
   end
 
+  # From a list of digits to Roman
   defp numeral([], _), do: ""
-  defp numeral([d], 1), do: single(d, 1)
+
+  # Takes care of single digits as they come from left to right
   defp numeral([d | r], c), do: single(d, c) <> numeral(r, c-1)
 
-  defp pow10(i), do: round(:math.pow(10, i))
 
 
 
@@ -35,11 +39,10 @@ defmodule RomanNumerals do
 
 
 
-  # The conversion of a single digit to corresponding Roman, taken care of by
-  # single func.
+  # The conversion of a single digit to corresponding Roman.
 
   # Base cases
-  defp single(0, _), do: ""     # This takes care of numbers like 101
+  defp single(0, _), do: ""     # This also takes care of 0 in numbers like 101 => CI
   defp single(1, 1), do: "I"
 
   # When it's in the base map
@@ -61,7 +64,7 @@ defmodule RomanNumerals do
   #       I                      V
 
   # When it's 9s
-  # It's always <10^i> <10^i+1> for i = 0, 1, 2
+  # It's always <10^c> <10^c+1> for c = 0, 1, 2
   defp single(n, c) when n == 9, do:
     power10s_in_roman(c) <> power10s_in_roman(c+1)
   #           I                   X
@@ -91,4 +94,6 @@ defmodule RomanNumerals do
     |> String.graphemes()
     |> Enum.map(&String.to_integer/1)
   end
+
+  defp pow10(i), do: round(:math.pow(10, i))
 end
