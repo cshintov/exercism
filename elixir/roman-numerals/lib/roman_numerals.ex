@@ -14,12 +14,6 @@ defmodule RomanNumerals do
   }
   @basenums Map.keys(@base)
 
-  defp digits(n) when n >= 0 do
-    Integer.to_string(n)
-    |> String.graphemes()
-    |> Enum.map(&String.to_integer/1)
-  end
-
   @spec numeral(pos_integer) :: String.t()
 
   def numeral(n) when n in @basenums, do: @base[n]
@@ -29,26 +23,72 @@ defmodule RomanNumerals do
   end
 
   defp numeral([], _), do: ""
-  defp numeral([d], 1), do: ones(d, 1)
-  defp numeral([d | r], c), do: ones(d, c) <> numeral(r, c-1)
+  defp numeral([d], 1), do: single(d, 1)
+  defp numeral([d | r], c), do: single(d, c) <> numeral(r, c-1)
 
   defp pow10(i), do: round(:math.pow(10, i))
 
-  defp ones(0, _), do: ""
-  defp ones(1, 1), do: "I"
 
-  defp ones(n, c) when n < 4, do:
-    @base[pow10(c-1)] <> ones(n-1, c)
 
-  defp ones(n, c) when n in @basenums, do:
+
+
+
+
+
+  # The conversion of a single digit to corresponding Roman, taken care of by
+  # single func.
+
+  # Base cases
+  defp single(0, _), do: ""     # This takes care of numbers like 101
+  defp single(1, 1), do: "I"
+
+  # When it's in the base map
+  defp single(n, c) when n in @basenums, do:
     @base[n * pow10(c-1)]
 
-  defp ones(n, c) when n == 4, do:
-    @base[pow10(c-1)] <> @base[5 * pow10(c-1)]
+  # For 2 and 3
+  defp single(n, c) when n < 4, do:
+    power10s_in_roman(c) <> single(n-1, c)
 
-  defp ones(n, c) when n > 4 and n < 9, do:
-    @base[5 * pow10(c-1)] <> ones(n-5, c)
+  # For 6, 7, 8
+  defp single(n, c) when n > 4 and n < 9, do:
+    halfs_in_roman(c) <> single(n-5, c)
+  #     V                    II
 
-  defp ones(n, c) when n == 9, do:
-    @base[pow10(c-1)] <> @base[10 * pow10(c-1)]
+  # For 4s, note the similarity to the case below of 9
+  defp single(n, c) when n == 4, do:
+    power10s_in_roman(c) <> halfs_in_roman(c)
+  #       I                      V
+
+  # When it's 9s
+  # It's always <10^i> <10^i+1> for i = 0, 1, 2
+  defp single(n, c) when n == 9, do:
+    power10s_in_roman(c) <> power10s_in_roman(c+1)
+  #           I                   X
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # Helper funcs
+
+  # Either I, X, C -> 1, 10, 100
+  defp power10s_in_roman(c), do: @base[pow10(c-1)]
+
+  # V, L, D -> 5, 50, 500
+  defp halfs_in_roman(c), do: @base[5 * pow10(c-1)]
+
+  defp digits(n) when n >= 0 do
+    Integer.to_string(n)
+    |> String.graphemes()
+    |> Enum.map(&String.to_integer/1)
+  end
 end

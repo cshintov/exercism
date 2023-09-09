@@ -1,6 +1,11 @@
 defmodule RomanNumeralsTest do
   use ExUnit.Case
 
+  @tag task_id: 0
+  test "101" do
+    assert RomanNumerals.numeral(101) == "CI"
+  end
+
   @tag task_id: 1
   test "1" do
     assert RomanNumerals.numeral(1) == "I"
