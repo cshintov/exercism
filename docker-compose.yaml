@@ -6,8 +6,12 @@ services:
     #  args:
         #UID: ${UID}
         #GID: ${GID}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
     volumes:
       - /home/shinto/exercism/elixir:/exercism
     #command: mix run
     #entrypoint: ["-c", "sleep infinity"]
-

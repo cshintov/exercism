@@ -5,8 +5,10 @@ all: watch
 build:
 	docker-compose build
 
+start: run
+	
 run:
-	docker-compose up -d
+	docker-compose --compatibility up -d
 
 shell:
 	docker-compose exec app bash
