@@ -4,35 +4,30 @@ defmodule RomanNumerals do
   http://www.novaroma.org/via_romana/numbers.html
   """
 
-  @roman_digits %{
-    1 => "I",
-    4 => "IV",
-    5 => "V",
-    9 => "IX",
-    10 => "X",
-    40 => "XL",
-    50 => "L",
-    90 => "XC",
-    100 => "C",
-    400 => "CD",
-    500 => "D",
-    900 => "CM",
-    1000 => "M",
-  }
-
-  # [1000, 900, ..., 1]
-  @sorted_arabic_numbers Map.keys(@roman_digits) |> Enum.sort(:desc)
+  @arabic_to_roman [
+    {1000, "M"},
+    {900, "CM"},
+    {500, "D"},
+    {400, "CD"},
+    {100, "C"},
+    {90, "XC"},
+    {50, "L"},
+    {40, "XL"},
+    {10, "X"},
+    {9, "IX"},
+    {5, "V"},
+    {4, "IV"},
+    {1, "I"}
+  ]
 
   @spec numeral(pos_integer) :: String.t()
-  def numeral(n) when n > 0, do: encode(n)
+  def numeral(n) when n > 0, do: encode(n, @arabic_to_roman, "")
 
-  defp encode(n, arabic_numbers \\ @sorted_arabic_numbers)
+  defp encode(_, [], encoded), do: encoded
 
-  defp encode(n, [b | _] = arabic_numbers) when n > b, do:
-    numeral(b) <> encode(n - b, arabic_numbers)
+  defp encode(n, [{arabic, roman} | _] = arabic_to_roman, encoded)
+    when n >= arabic,
+    do: encode(n - arabic, arabic_to_roman, encoded <> roman)
 
-  defp encode(b, [b | _]), do: @roman_digits[b]
-
-  defp encode(n, [_ | r]), do: encode(n, r)
-
+  defp encode(n, [_ | rest], encoded), do: encode(n, rest, encoded)
 end
