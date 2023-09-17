@@ -21,13 +21,13 @@ defmodule RomanNumerals do
   ]
 
   @spec numeral(pos_integer) :: String.t()
-  def numeral(n) when n > 0, do: encode(n, "")
+  def numeral(n) when n > 0, do: encode(n, @arabic_to_roman, "")
 
-  defp encode(0, encoded), do: encoded
+  defp encode(_, [], encoded), do: encoded
 
-  for {arabic, roman} <- @arabic_to_roman do
-    defp encode(n, encoded) when n >= unquote(arabic),
-      do: encode(n - unquote(arabic), encoded <> unquote(roman))
-  end
+  defp encode(n, [{arabic, roman} | _] = arabic_to_roman, encoded)
+    when n >= arabic,
+    do: encode(n - arabic, arabic_to_roman, encoded <> roman)
 
+  defp encode(n, [_ | rest], encoded), do: encode(n, rest, encoded)
 end

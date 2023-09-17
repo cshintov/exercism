@@ -1,9 +1,4 @@
 defmodule RomanNumerals do
-  @doc """
-  Convert the number to a roman number.
-  http://www.novaroma.org/via_romana/numbers.html
-  """
-
   @arabic_to_roman [
     {1000, "M"},
     {900, "CM"},
@@ -21,13 +16,13 @@ defmodule RomanNumerals do
   ]
 
   @spec numeral(pos_integer) :: String.t()
-  def numeral(n) when n > 0, do: encode(n, "")
+  def numeral(n) when n > 0, do: encode(n, @arabic_to_roman, "")
 
   defp encode(0, encoded), do: encoded
 
-  for {arabic, roman} <- @arabic_to_roman do
+  Enum.each(@arabic_to_roman, fn {arabic, roman} ->
     defp encode(n, encoded) when n >= unquote(arabic),
       do: encode(n - unquote(arabic), encoded <> unquote(roman))
-  end
+  end)
 
 end

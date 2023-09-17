@@ -14,10 +14,6 @@ defmodule MyRomanNumerals do
   }
   @basenums Map.keys(@base)
 
-
-
-
-
   @spec numeral(pos_integer) :: String.t()
 
   def numeral(n) do
@@ -30,14 +26,6 @@ defmodule MyRomanNumerals do
 
   # Takes care of single digits as they come from left to right
   defp numeral([d | r], c), do: single(d, c) <> numeral(r, c-1)
-
-
-
-
-
-
-
-
 
   # The conversion of a single digit to corresponding Roman.
 
@@ -68,18 +56,6 @@ defmodule MyRomanNumerals do
   defp single(n, c) when n == 9, do:
     power10s_in_roman(c) <> power10s_in_roman(c+1)
   #           I                   X
-
-
-
-
-
-
-
-
-
-
-
-
 
   # Helper funcs
 
