@@ -85,7 +85,7 @@ defmodule CommunityGardenTest do
 
     CommunityGarden.release(pid, plot_1.plot_id)
 
-    assert [plot_2] = CommunityGarden.list_registrations(pid)
+    assert [^plot_2] = CommunityGarden.list_registrations(pid)
   end
 
   @tag task_id: 5
@@ -102,4 +102,25 @@ defmodule CommunityGardenTest do
     assert {:ok, pid} = CommunityGarden.start()
     assert {:not_found, "plot is unregistered"} = CommunityGarden.get_registration(pid, 1)
   end
+
+  @tag task_id: 6
+  test "register multiple plots concurrently" do
+    {:ok, pid} = CommunityGarden.start()
+
+    # Spawn 25 processes that register a plot concurrently
+    for _ <- 1..25 do
+      Task.async(fn -> CommunityGarden.register(pid, "user") end)
+    end
+    |> Enum.map(&Task.await/1)
+    |> Enum.map(& &1.plot_id)
+
+    # Get the list of registered plot IDs
+    plot_ids = CommunityGarden.list_registrations(pid)
+    |> Enum.map(& &1.plot_id)
+
+    # Assert that each plot ID is unique
+    assert Enum.uniq(plot_ids) == plot_ids
+  end
+
 end
+
