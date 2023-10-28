@@ -17,7 +17,7 @@ iex:
 	docker-compose exec app rlwrap -a iex --dot-iex ../.iex.exs
 
 test:
-	docker-compose exec -w /exercism/$(exercise) app mix test #--exclude task_id --include task_id:6 #--include task_id:2 --include task_id:3 --include task_id:4
+	docker-compose exec -w /exercism/$(exercise) app mix test #--exclude task_id --include task_id:$(id) #--include task_id:2 --include task_id:3 --include task_id:4
 	#docker-compose exec -w /exercism/$(exercise) app mix test --exclude task_id --include task_id:6
 
 deps:
