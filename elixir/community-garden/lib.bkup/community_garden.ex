@@ -8,11 +8,16 @@ end
 defmodule CommunityGarden do
   use Agent
 
+  #defstruct [:next_id, :plots]
+
   def start(_opts \\ []) do
-    Agent.start_link(fn -> %{id: 0, plots: []} end, name: __MODULE__)
+    Agent.start_link(fn -> %{id: 1, plots: %{}} end, name: __MODULE__)
   end
 
-  def list_registrations(pid), do: Agent.get(pid, & &1.plots)
+  def list_registrations(pid) do
+    Agent.get(pid, fn %{id: id, plots: plots} -> Map.values(plots) end)
+  end
+
 
   #def register(pid, register_to) do
     #Agent.get_and_update(pid, fn %{id: id, plots: plots} ->
@@ -23,23 +28,24 @@ defmodule CommunityGarden do
 
 #  def register(pid, register_to) do
     #state = Agent.get(pid, fn state -> state end)
-    #%{plots: plots, id: id} = state
 
-    #new_plot = %Plot{plot_id: id + 1, registered_to: register_to}
-
-    #Agent.update(pid, fn state ->
-    ##new_plot = %Plot{plot_id: id + 1, registered_to: register_to}
-      #state = %{state | plots: [new_plot | plots], id: id+1}
+    #Agent.update(pid, fn %{id: id, plots: plots} ->
+      #new_plot = %Plot{plot_id: id+1, registered_to: register_to}
+      #%{id: id+1, plots: [new_plot | plots]}
     #end)
 
     #new_plot
   #end
 
   def register(pid, register_to) do
-    new_id = Agent.get(pid, & &1.id) + 1
+    state = Agent.get(pid, fn state -> state end)
+    %{plots: plots, id: next_id} = state
 
-    new_plot = %Plot{plot_id: new_id, registered_to: register_to}
-    Agent.update(pid, &%{id: new_id, plots: [new_plot | &1.plots]})
+    new_plot = %Plot{plot_id: next_id, registered_to: register_to}
+    updated = Map.put(plots, next_id, new_plot)
+
+    state = %{state | plots: updated, id: next_id + 1}
+    Agent.update(pid, fn x -> state end)
 
     new_plot
   end

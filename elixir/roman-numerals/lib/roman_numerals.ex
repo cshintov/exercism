@@ -3,6 +3,15 @@ defmodule RomanNumerals do
   Convert the number to a roman number.
   http://www.novaroma.org/via_romana/numbers.html
   """
+  @test [
+    {1000, "M"},
+    {500, "D"},
+    {100, "C"},
+    {50, "L"},
+    {10, "X"},
+    {5, "V"},
+    {1, "I"}
+  ]
 
   @arabic_to_roman [
     {1000, "M"},

@@ -46,12 +46,11 @@ defmodule CommunityGardenTest do
   end
 
   @tag task_id: 3
-  @tag skip: true
   test "register multiple plots concurrently" do
     {:ok, pid} = CommunityGarden.start()
 
     # Spawn 25 processes that register a plot concurrently
-    for _ <- 1..25 do
+    for _ <- 1..250 do
       Task.async(fn -> CommunityGarden.register(pid, "user") end)
     end
     |> Enum.map(&Task.await/1)
